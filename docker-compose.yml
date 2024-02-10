@@ -1,0 +1,29 @@
+services:
+  weview-app:
+    container_name: weview-app
+    build:
+      context: .
+      target: dev
+    restart: always
+    command: yarn dev
+    environment:
+      DATABASE_URL: postgresql://postgres:password@weview-db:5432/weview
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 4000:3000
+  weview-db:
+    image: postgres:13
+    restart: always
+    container_name: weview-db
+    volumes:
+      - './postgresql/data:/var/lib/postgresql/data'
+      - './init/:/docker-entrypoint-initdb.d/'
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env.development
+    environment:
+      TZ: 'Asia/Seoul'
