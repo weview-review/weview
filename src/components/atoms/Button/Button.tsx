@@ -11,7 +11,6 @@ interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof ButtonVariants> {
   children?: React.ReactNode;
-  additionalClass?: string;
   isLoading?: boolean;
   ref?: ForwardedRef<HTMLButtonElement>;
   block?: boolean;
