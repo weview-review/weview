@@ -14,8 +14,10 @@ interface ButtonProps
   isLoading?: boolean;
   ref?: ForwardedRef<HTMLButtonElement>;
   block?: boolean;
-  leftIcon?: React.ReactElement;
-  rightIcon?: React.ReactElement;
+  icon?: {
+    icon: React.ReactNode;
+    position: 'left' | 'right';
+  };
 }
 
 const ButtonVariants = cva(
@@ -64,8 +66,7 @@ const Button = ({
   size,
   ref,
   block,
-  leftIcon,
-  rightIcon,
+  icon,
   ...props
 }: ButtonProps) => {
   return (
@@ -74,14 +75,14 @@ const Button = ({
       className={cn(
         ButtonVariants({ variant, size, className }),
         block && 'w-full',
-        (leftIcon || rightIcon) && 'gap-1',
+        icon && 'gap-1',
       )}
       ref={ref}
       {...props}
     >
-      {leftIcon}
+      {icon?.position === 'left' && icon.icon}
       {children}
-      {rightIcon}
+      {icon?.position === 'right' && icon.icon}
     </button>
   );
 };

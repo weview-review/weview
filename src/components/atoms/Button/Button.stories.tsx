@@ -83,10 +83,10 @@ export const Lg: Story = {
   },
 };
 
-export const LeftIcon: Story = {
-  args: { size: 'sm', children: 'Click Me', leftIcon: <FaSmile /> },
-};
-
-export const RightIcon: Story = {
-  args: { size: 'sm', children: 'Click Me', rightIcon: <FaSmile /> },
+export const Icon: Story = {
+  args: {
+    size: 'md',
+    children: 'Click Me',
+    icon: { icon: <FaSmile />, position: 'right' },
+  },
 };
