@@ -45,16 +45,16 @@ const ButtonVariants = cva(
         ],
       },
       size: {
-        xs: ['text-sm', 'py-1', 'px-2'],
-        sm: ['text-base', 'py-2', 'px-3'],
-        md: ['text-base', 'py-3', 'px-5'],
-        lg: ['text-base', 'py-4', 'px-6'],
+        xs: ['text-sm', 'py-1', 'px-1'],
+        sm: ['text-base', 'py-2', 'px-2'],
+        md: ['text-base', 'py-3', 'px-3'],
+        lg: ['text-base', 'py-4', 'px-4'],
       },
     },
 
     defaultVariants: {
       variant: 'contained',
-      size: 'sm',
+      size: 'md',
     },
   },
 );
