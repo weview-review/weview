@@ -67,11 +67,12 @@ const Button = ({
   ref,
   block,
   icon,
+  disabled,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      aria-disabled={props.disabled}
+      aria-disabled={disabled}
       className={cn(
         ButtonVariants({ variant, size, className }),
         block && 'w-full',
