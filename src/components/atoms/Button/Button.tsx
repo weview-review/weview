@@ -1,4 +1,10 @@
-import { ButtonHTMLAttributes, ForwardedRef } from 'react';
+import {
+  ButtonHTMLAttributes,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -12,7 +18,6 @@ interface ButtonProps
     VariantProps<typeof ButtonVariants> {
   children?: React.ReactNode;
   isLoading?: boolean;
-  ref?: ForwardedRef<HTMLButtonElement>;
   block?: boolean;
   icon?: {
     icon: React.ReactNode;
@@ -59,33 +64,55 @@ const ButtonVariants = cva(
   },
 );
 
-const Button = ({
-  children,
-  className,
-  variant,
-  size,
-  ref,
-  block,
-  icon,
-  disabled,
-  ...props
-}: ButtonProps) => {
-  return (
-    <button
-      aria-disabled={disabled}
-      className={cn(
-        ButtonVariants({ variant, size, className }),
-        block && 'w-full',
-        icon && 'gap-1',
-      )}
-      ref={ref}
-      {...props}
-    >
-      {icon?.position === 'left' && icon.icon}
-      {children}
-      {icon?.position === 'right' && icon.icon}
-    </button>
-  );
-};
+const Button = forwardRef<HTMLButtonElement>(
+  (
+    {
+      children,
+      className,
+      variant,
+      size,
+      block,
+      icon,
+      disabled,
+      ...props
+    }: ButtonProps,
+    forwardedRef,
+  ): JSX.Element => {
+    const innerRef = useRef<HTMLButtonElement>(null);
+    useImperativeHandle<HTMLButtonElement | null, HTMLButtonElement | null>(
+      forwardedRef,
+      () => innerRef.current,
+    );
+
+    useEffect(() => {
+      if (
+        innerRef.current &&
+        !(innerRef.current instanceof HTMLButtonElement) &&
+        !((innerRef.current as unknown) instanceof HTMLAnchorElement)
+      ) {
+        console.warn(
+          'This component should be an instanceof a semantic button or anchor',
+        );
+      }
+    }, [innerRef]);
+
+    return (
+      <button
+        aria-disabled={disabled}
+        ref={innerRef}
+        className={cn(
+          ButtonVariants({ variant, size, className }),
+          block && 'w-full',
+          icon && 'gap-1',
+        )}
+        {...props}
+      >
+        {icon?.position === 'left' && icon.icon}
+        {children}
+        {icon?.position === 'right' && icon.icon}
+      </button>
+    );
+  },
+);
 Button.displayName = 'Button';
 export { Button, ButtonVariants };
