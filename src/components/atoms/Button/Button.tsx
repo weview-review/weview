@@ -1,10 +1,4 @@
-import {
-  ButtonHTMLAttributes,
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -64,7 +58,7 @@ const ButtonVariants = cva(
   },
 );
 
-const Button = forwardRef<HTMLButtonElement>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
@@ -76,30 +70,12 @@ const Button = forwardRef<HTMLButtonElement>(
       disabled,
       ...props
     }: ButtonProps,
-    forwardedRef,
-  ): JSX.Element => {
-    const innerRef = useRef<HTMLButtonElement>(null);
-    useImperativeHandle<HTMLButtonElement | null, HTMLButtonElement | null>(
-      forwardedRef,
-      () => innerRef.current,
-    );
-
-    useEffect(() => {
-      if (
-        innerRef.current &&
-        !(innerRef.current instanceof HTMLButtonElement) &&
-        !((innerRef.current as unknown) instanceof HTMLAnchorElement)
-      ) {
-        console.warn(
-          'This component should be an instanceof a semantic button or anchor',
-        );
-      }
-    }, [innerRef]);
-
+    forwardRef,
+  ) => {
     return (
       <button
         aria-disabled={disabled}
-        ref={innerRef}
+        ref={forwardRef}
         className={cn(
           ButtonVariants({ variant, size, className }),
           block && 'w-full',
