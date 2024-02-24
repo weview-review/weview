@@ -83,10 +83,19 @@ export const Lg: Story = {
   },
 };
 
+//TODO : argTypes에 Icon 관련 추가 예정
 export const Icon: Story = {
   args: {
     size: 'md',
     children: 'Click Me',
-    icon: { icon: <FaSmile />, position: 'right' },
+    icon: <FaSmile />,
+  },
+};
+export const IconRight: Story = {
+  args: {
+    size: 'md',
+    children: 'Click Me',
+    icon: <FaSmile />,
+    iconRight: true,
   },
 };

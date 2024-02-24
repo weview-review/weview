@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+import React, { ButtonHTMLAttributes, forwardRef } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -13,10 +13,8 @@ interface ButtonProps
   children?: React.ReactNode;
   isLoading?: boolean;
   block?: boolean;
-  icon?: {
-    icon: React.ReactNode;
-    position: 'left' | 'right';
-  };
+  icon?: React.ReactNode;
+  iconRight?: boolean;
 }
 
 const ButtonVariants = cva(
@@ -50,11 +48,6 @@ const ButtonVariants = cva(
         lg: ['text-base', 'py-4', 'px-4'],
       },
     },
-
-    defaultVariants: {
-      variant: 'contained',
-      size: 'md',
-    },
   },
 );
 
@@ -63,10 +56,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       className,
-      variant,
-      size,
+      variant = 'contained',
+      size = 'md',
       block,
       icon,
+      iconRight = false,
       disabled,
       ...props
     }: ButtonProps,
@@ -83,9 +77,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {icon?.position === 'left' && icon.icon}
+        {icon && !iconRight && icon}
         {children}
-        {icon?.position === 'right' && icon.icon}
+        {icon && iconRight && icon}
       </button>
     );
   },
