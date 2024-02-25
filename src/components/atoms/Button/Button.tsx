@@ -75,8 +75,8 @@ const _Button: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
       ref={forwardRef}
       className={cn(
         ButtonVariants({ variant, size, className }),
-        block && 'w-full',
-        icon && 'gap-1',
+        block && 'block w-full',
+        icon && 'inline-flex gap-1',
       )}
       {...props}
     >
