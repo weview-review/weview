@@ -1,7 +1,7 @@
-import { Button } from './Button';
-import { FaSmile } from 'react-icons/fa';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Button } from './Button';
+import { FiSmile } from 'react-icons/fi';
 
 const meta: Meta<typeof Button> = {
   title: 'Atoms/Button',
@@ -11,22 +11,24 @@ const meta: Meta<typeof Button> = {
     variant: {
       control: {
         type: 'select',
+        options: ['contained', 'outlined', 'link'],
       },
-      options: ['contained', 'outlined', 'link'],
-      description: 'contained | outlined | link',
     },
     size: {
       control: {
         type: 'select',
+        options: ['xs', 'sm', 'md', 'lg'],
       },
-      options: ['xs', 'sm', 'md', 'lg'],
-      description: 'xs | sm | md | lg',
     },
-    block: {
+    icon: {
       control: {
-        type: 'boolean',
+        type: 'none',
       },
-      description: 'true | false',
+    },
+    iconRight: {
+      control: {
+        type: 'none',
+      },
     },
   },
 };
@@ -35,67 +37,84 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-export const Contained: Story = {
+export const Default: Story = {
   args: {
     variant: 'contained',
     children: 'Button',
   },
 };
 
+export const Contained: Story = {
+  args: {
+    variant: 'contained',
+    children: 'Button',
+  },
+};
 export const Outlined: Story = {
   args: {
     variant: 'outlined',
     children: 'Button',
   },
 };
+
 export const Link: Story = {
   args: {
     variant: 'link',
     children: 'Button',
   },
 };
+export const Disabled: Story = {
+  args: {
+    ...Default.args,
+    disabled: true,
+  },
+};
+
+export const Block: Story = {
+  args: {
+    ...Default.args,
+    block: true,
+  },
+};
 
 export const Xs: Story = {
   args: {
+    ...Default.args,
     size: 'xs',
-    children: 'Button',
   },
 };
 
 export const Sm: Story = {
   args: {
+    ...Default.args,
     size: 'sm',
-    children: 'Button',
   },
 };
 
 export const Md: Story = {
   args: {
+    ...Default.args,
     size: 'md',
-    children: 'Button',
   },
 };
 
 export const Lg: Story = {
   args: {
+    ...Default.args,
     size: 'lg',
-    children: 'Button',
   },
 };
 
-//TODO : argTypes에 Icon 관련 추가 예정
-export const Icon: Story = {
+export const WithIcon: Story = {
   args: {
-    size: 'md',
-    children: 'Click Me',
-    icon: <FaSmile />,
+    ...Default.args,
+    icon: <FiSmile />,
   },
 };
+
 export const IconRight: Story = {
   args: {
-    size: 'md',
-    children: 'Click Me',
-    icon: <FaSmile />,
+    ...WithIcon.args,
     iconRight: true,
   },
 };
