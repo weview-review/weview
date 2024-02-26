@@ -25,11 +25,6 @@ const meta: Meta<typeof Button> = {
         type: 'none',
       },
     },
-    iconRight: {
-      control: {
-        type: 'none',
-      },
-    },
   },
 };
 
@@ -114,7 +109,7 @@ export const WithIcon: Story = {
 
 export const IconRight: Story = {
   args: {
-    ...WithIcon.args,
-    iconRight: true,
+    ...Default.args,
+    icon: { icon: <FiSmile />, gap: 'sm', position: 'right' },
   },
 };

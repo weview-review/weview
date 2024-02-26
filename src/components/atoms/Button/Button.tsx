@@ -1,19 +1,26 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren, forwardRef } from 'react';
 import { cva } from 'class-variance-authority';
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import React from 'react';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+type IconProps = {
+  icon: React.ReactNode;
+  position?: 'left' | 'right';
+  gap?: 'sm' | 'md' | 'lg';
+};
+
+type ButtonIcon = React.ReactNode | IconProps;
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'contained' | 'outlined' | 'link';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   children?: React.ReactNode;
   block?: boolean;
-  icon?: React.ReactNode;
-  iconRight?: boolean;
+  icon?: ButtonIcon;
 }
 const ButtonVariants = cva(
   `inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 `,
@@ -47,20 +54,58 @@ const ButtonVariants = cva(
         lg: ['text-base', 'py-4', 'px-4'],
       },
     },
+    defaultVariants: {
+      variant: 'contained',
+      size: 'md',
+    },
   },
 );
 
+const IconContainerVariants = cva(`flex items-center justify-center`, {
+  variants: {
+    gap: {
+      sm: ['gap-1'],
+      md: ['gap-3'],
+      lg: ['gap-5'],
+    },
+  },
+  defaultVariants: { gap: 'md' },
+});
+
+const IconGenerator = ({
+  icon,
+  children,
+}: { icon?: ButtonIcon } & PropsWithChildren) => {
+  if (!icon) {
+    return children;
+  }
+  if (typeof icon === 'object' && 'icon' in icon) {
+    return (
+      <div className={cn(IconContainerVariants({ gap: icon?.gap || 'md' }))}>
+        {icon.position !== 'right' && icon.icon}
+        {children}
+        {icon.position === 'right' && icon.icon}
+      </div>
+    );
+  } else {
+    return (
+      <div className={cn(IconContainerVariants())}>
+        {React.isValidElement(icon) ? icon : null}
+        {children}
+      </div>
+    );
+  }
+};
 // eslint-disable-next-line react/display-name
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
       className,
-      variant = 'contained',
-      size = 'md',
+      variant,
+      size,
       block,
       icon,
-      iconRight = false,
       disabled = false,
       ...props
     },
@@ -74,13 +119,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           ButtonVariants({ variant, size, className }),
           block && 'block w-full',
-          icon && 'inline-flex gap-1',
         )}
         {...props}
       >
-        {icon && !iconRight && icon}
-        {children}
-        {icon && iconRight && icon}
+        <IconGenerator icon={icon}>{children}</IconGenerator>
       </button>
     );
   },
