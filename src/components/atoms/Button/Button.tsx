@@ -1,9 +1,5 @@
-import {
-  ButtonHTMLAttributes,
-  ForwardRefRenderFunction,
-  forwardRef,
-} from 'react';
-import { VariantProps, cva } from 'class-variance-authority';
+import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { cva } from 'class-variance-authority';
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -11,9 +7,9 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof ButtonVariants> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'contained' | 'outlined' | 'link';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   children?: React.ReactNode;
   block?: boolean;
   icon?: React.ReactNode;
@@ -54,36 +50,40 @@ const ButtonVariants = cva(
   },
 );
 
-const _Button: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
-  {
-    children,
-    className,
-    variant = 'contained',
-    size = 'md',
-    block,
-    icon,
-    iconRight = false,
-    disabled = false,
-    ...props
-  }: ButtonProps,
-  forwardRef,
-) => {
-  return (
-    <button
-      aria-disabled={disabled}
-      disabled={disabled}
-      ref={forwardRef}
-      className={cn(
-        ButtonVariants({ variant, size, className }),
-        block && 'block w-full',
-        icon && 'inline-flex gap-1',
-      )}
-      {...props}
-    >
-      {icon && !iconRight && icon}
-      {children}
-      {icon && iconRight && icon}
-    </button>
-  );
-};
-export const Button = forwardRef(_Button);
+// eslint-disable-next-line react/display-name
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      className,
+      variant = 'contained',
+      size = 'md',
+      block,
+      icon,
+      iconRight = false,
+      disabled = false,
+      ...props
+    },
+    forwardRef,
+  ) => {
+    return (
+      <button
+        aria-disabled={disabled}
+        disabled={disabled}
+        ref={forwardRef}
+        className={cn(
+          ButtonVariants({ variant, size, className }),
+          block && 'block w-full',
+          icon && 'inline-flex gap-1',
+        )}
+        {...props}
+      >
+        {icon && !iconRight && icon}
+        {children}
+        {icon && iconRight && icon}
+      </button>
+    );
+  },
+);
+
+export default Button;
