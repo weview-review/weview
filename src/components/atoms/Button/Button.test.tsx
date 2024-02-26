@@ -1,6 +1,6 @@
 import { render, screen, cleanup, fireEvent } from '@/tests/test-utils';
 
-import { Button } from './Button';
+import Button from './Button';
 import { FiHeart } from 'react-icons/fi';
 
 describe('Button 컴포넌트 테스트', () => {
@@ -29,7 +29,7 @@ describe('Button 컴포넌트 테스트', () => {
     render(
       <>
         <Button icon={<FiHeart />}>Icon</Button>
-        <Button icon={<FiHeart />} iconRight>
+        <Button icon={{ icon: <FiHeart />, position: 'right' }}>
           IconRight
         </Button>
       </>,
