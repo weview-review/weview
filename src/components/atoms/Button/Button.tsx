@@ -16,10 +16,22 @@ type IconProps = {
 
 type ButtonIcon = React.ReactNode | IconProps;
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * 버튼 스타일 타입을 지정합니다.
+   */
   variant?: 'contained' | 'outlined' | 'link';
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  /**
+   * 버튼의 크기를 지정합니다.
+   */
+  size?: 'sm' | 'md' | 'lg';
+  /**
+   * 버튼의 이름을 설정합니다. 이름은 `ReactNode` 타입으로 설정할 수 있습니다.
+   */
   children?: React.ReactNode;
-  block?: boolean;
+  /**
+   * 버튼에 아이콘을 추가할 수 있습니다. 기본적으로 ReactNode를 지원하며, 상세하게 설정하길 원하면 object 타입으로 넘겨주어 사용할 수 있습니다.
+   * `ReactNode` or `{ icon, position, gap }`
+   */
   icon?: ButtonIcon;
 }
 const ButtonVariants = cva(
@@ -44,14 +56,13 @@ const ButtonVariants = cva(
           'bg-transparent',
           'text-blue-500',
           'border-transparent',
-          'hover:bg-blue-50',
+          'hover:text-blue-400',
         ],
       },
       size: {
-        xs: ['text-sm', 'py-1', 'px-1'],
-        sm: ['text-base', 'py-2', 'px-2'],
-        md: ['text-base', 'py-3', 'px-3'],
-        lg: ['text-base', 'py-4', 'px-4'],
+        sm: ['text-base', 'p-1'],
+        md: ['text-base', 'p-2'],
+        lg: ['text-base', 'p-3'],
       },
     },
     defaultVariants: {
@@ -65,8 +76,8 @@ const IconContainerVariants = cva(`flex items-center justify-center`, {
   variants: {
     gap: {
       sm: ['gap-1'],
-      md: ['gap-3'],
-      lg: ['gap-5'],
+      md: ['gap-2'],
+      lg: ['gap-4'],
     },
   },
   defaultVariants: { gap: 'md' },
@@ -96,19 +107,14 @@ const IconGenerator = ({
     );
   }
 };
+
+/**
+ * 상호작용 할 수 있는 버튼 컴포넌트 입니다.
+ */
 // eslint-disable-next-line react/display-name
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      children,
-      className,
-      variant,
-      size,
-      block,
-      icon,
-      disabled = false,
-      ...props
-    },
+    { children, className, variant, size, icon, disabled = false, ...props },
     forwardRef,
   ) => {
     return (
@@ -116,10 +122,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={disabled}
         disabled={disabled}
         ref={forwardRef}
-        className={cn(
-          ButtonVariants({ variant, size, className }),
-          block && 'block w-full',
-        )}
+        className={cn(ButtonVariants({ variant, size, className }))}
         {...props}
       >
         <IconGenerator icon={icon}>{children}</IconGenerator>

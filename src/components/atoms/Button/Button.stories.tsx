@@ -4,7 +4,7 @@ import Button from './Button';
 import { FiSmile } from 'react-icons/fi';
 
 const meta: Meta<typeof Button> = {
-  title: 'Atoms/Button',
+  title: 'weview/Atoms/Button',
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -13,11 +13,17 @@ const meta: Meta<typeof Button> = {
         type: 'select',
         options: ['contained', 'outlined', 'link'],
       },
+      table: {
+        defaultValue: { summary: 'contained' },
+      },
     },
     size: {
       control: {
         type: 'select',
-        options: ['xs', 'sm', 'md', 'lg'],
+        options: ['sm', 'md', 'lg'],
+      },
+      table: {
+        defaultValue: { summary: 'md' },
       },
     },
     icon: {
@@ -36,6 +42,7 @@ export const Default: Story = {
   args: {
     variant: 'contained',
     children: 'Button',
+    size: 'md',
   },
 };
 
@@ -62,20 +69,6 @@ export const Disabled: Story = {
   args: {
     ...Default.args,
     disabled: true,
-  },
-};
-
-export const Block: Story = {
-  args: {
-    ...Default.args,
-    block: true,
-  },
-};
-
-export const Xs: Story = {
-  args: {
-    ...Default.args,
-    size: 'xs',
   },
 };
 
