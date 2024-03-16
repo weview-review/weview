@@ -1,12 +1,7 @@
+import React from 'react';
 import { ButtonHTMLAttributes, PropsWithChildren, forwardRef } from 'react';
 import { cva } from 'class-variance-authority';
-import { ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import React from 'react';
-
-export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(clsx(inputs));
-};
+import { cn } from '../../../utils';
 
 type IconProps = {
   icon: React.ReactNode;
